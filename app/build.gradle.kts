@@ -50,8 +50,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kotlinx.serialization.json)
+    //noinspection UseTomlInstead
     implementation("com.google.dagger:hilt-android:2.51.1")
+    //noinspection UseTomlInstead
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    //noinspection UseTomlInstead
+    implementation ("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
+    //noinspection UseTomlInstead
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
 
 }
 
