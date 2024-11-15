@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface CoinApi {
 
-    @GET(".api.mockbin.io/")
+    @GET("/")
     suspend fun getCoinList(): Response<Array<BaseCoinModel>>
 
 }

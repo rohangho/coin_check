@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 
-    val homeViewModel : HomeViewModel by viewModels()
+    private val homeViewModel : HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +25,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        homeViewModel.getData()
+                homeViewModel.getData()
     }
 }

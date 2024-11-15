@@ -5,10 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+
 import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
@@ -20,10 +19,8 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://37656be98b8f42ae8348e4da3ee3193f")
-            .addConverterFactory(
-                Json.asConverterFactory(MediaType.get("application/json"))
-            ).build()
+            .baseUrl("https://37656be98b8f42ae8348e4da3ee3193f.api.mockbin.io")
+            .addConverterFactory(GsonConverterFactory.create()).build()
 
     }
 
@@ -35,3 +32,4 @@ object NetworkModule {
 
 
 }
+

@@ -1,16 +1,13 @@
 package com.example.coin.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-
-@Serializable
 data class BaseCoinModel (
 
-  @SerialName("name"      ) var name     : String?  = null,
-  @SerialName("symbol"    ) var symbol   : String?  = null,
-  @SerialName("is_new"    ) var isNew    : Boolean? = null,
-  @SerialName("is_active" ) var isActive : Boolean? = null,
-  @SerialName("type"      ) var type     : String?  = null
 
+  @SerializedName("name") var name: String? = null,
+  @SerializedName("symbol") var symbol: String? = null,
+  @SerializedName("is_new") var isNew: Boolean? = null,
+  @SerializedName("is_active") var isActive: Boolean? = null,
+  @SerializedName("type") var type: String? = null
 )
