@@ -18,6 +18,7 @@ import com.example.coin.adapter.CoinAdapter
 import com.example.coin.databinding.ActivityMainBinding
 import com.example.coin.viewmodel.HomeViewModel
 import com.example.coin.viewmodel.ScreenState
+import com.example.coin.viewmodel.UIEvent
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,17 +44,14 @@ class MainActivity : AppCompatActivity() {
         }
         homeViewModel.getData()
         observeData()
-        updateSearchIconUI()
         bindFilterChips()
 
-        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
+        onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(homeViewModel.backSearchMode) {
-                    homeViewModel.setBackMode(false)
-                    adapter.updateList(homeViewModel.returnAllList())
+                if (homeViewModel.backSearchMode) {
+                    homeViewModel.processEvent(UIEvent.BackToOriginal)
                     updateSearchIconUI()
-                }
-                else
+                } else
                     finish()
 
             }
@@ -84,8 +82,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setPositiveButton("OK") { dialog,
                                                   which ->
                     binding.searchIcon.setImageResource(R.drawable.baseline_arrow_back_24)
-                    homeViewModel.backSearchMode = true
-                    adapter.updateList(homeViewModel.searchCoin(input.text.toString()))
+                    homeViewModel.processEvent(UIEvent.SearchData(input.text.toString()))
                 }
                 builder.setNegativeButton("Cancel") { dialog, which ->
                     dialog.cancel()
@@ -122,8 +119,7 @@ class MainActivity : AppCompatActivity() {
                 if (checkedIds.contains(R.id.chip_oldcoin))
                     listOfFilter[2].add("false")
 
-
-                adapter.updateList(homeViewModel.updateList(listOfFilter))
+                homeViewModel.processEvent(UIEvent.FilterResult(listOfFilter))
 
             }
         })
@@ -149,6 +145,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
+        homeViewModel.coinList.observe(this) {
+            hideProgress()
+            adapter.updateList(it)
+            showCoinList()
+            updateSearchIconUI()
+        }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED)
             {
@@ -164,14 +166,14 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         is ScreenState.SuccessData -> {
-                            hideProgress()
-                            showCoinList()
-                            adapter.updateList(it.data)
+                            homeViewModel.syncData()
+
                         }
                     }
                 }
+
             }
         }
-    }
 
+    }
 }
