@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
@@ -34,7 +33,30 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
         }
     }
 
-}
+
+
+    fun updateList(listOfFilter: MutableList<MutableList<String>>) =
+        (screenState.value as SuccessData).data.filter {
+            if(listOfFilter[0].isEmpty())
+                true
+            else
+                listOfFilter[0].isNotEmpty() && listOfFilter[0].contains(it.isActive.toString())
+
+        }.filter {
+            if(listOfFilter[2].isEmpty())
+                true
+            else
+                listOfFilter[2].isNotEmpty() && listOfFilter[2].contains(it.isNew.toString())
+
+        }.filter {
+            if(listOfFilter[1].isEmpty())
+                true
+            else
+                listOfFilter[1].isNotEmpty() && listOfFilter[1].contains(it.type)
+        }
+    }
+
+
 
 sealed class ScreenState()
 {

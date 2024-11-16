@@ -35,16 +35,17 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="Coin"
                 android:textColor="#ffff"
                 android:textSize="20sp"
-                android:layout_marginLeft="5dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/searchIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icons8_search"
@@ -59,12 +60,13 @@
 
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="0dp"
     app:layout_constraintTop_toBottomOf="@id/appbar"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     android:id="@+id/coinRecycler"
     android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/chipGroup"
     />
 
     <ProgressBar
@@ -89,6 +91,68 @@
         android:src="@drawable/baseline_error_24"
         android:visibility="gone"
         />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_active"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Coin"/>
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_inactive"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inactive Coin"/>
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_token"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Only Token"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_coin"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Only Coin"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_newcoin"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Coin"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_oldcoin"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Old Coin"/>
+
+
+
+
+    </com.google.android.material.chip.ChipGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

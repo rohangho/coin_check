@@ -2,7 +2,6 @@ package com.example.coin
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +14,7 @@ import com.example.coin.adapter.CoinAdapter
 import com.example.coin.databinding.ActivityMainBinding
 import com.example.coin.viewmodel.HomeViewModel
 import com.example.coin.viewmodel.ScreenState
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -41,9 +40,48 @@ class MainActivity : AppCompatActivity() {
         homeViewModel.getData()
         observeData()
 
+
+        bindFilterChips()
+
+    }
+
+    private fun bindFilterChips() {
+        binding.chipGroup.setOnCheckedStateChangeListener(object :
+            ChipGroup.OnCheckedStateChangeListener {
+            override fun onCheckedChanged(
+                group: ChipGroup,
+                checkedIds: List<Int?>
+            ) {
+
+                val listOfFilter: MutableList<MutableList<String>> = mutableListOf()
+                listOfFilter.add(mutableListOf()) // for active
+                listOfFilter.add(mutableListOf()) // for coin
+                listOfFilter.add(mutableListOf()) //for isNew
+
+
+
+                if (checkedIds.contains(R.id.chip_active))
+                    listOfFilter[0].add("true")
+                if (checkedIds.contains(R.id.chip_inactive))
+                    listOfFilter[0].add("false")
+                if (checkedIds.contains(R.id.chip_coin))
+                    listOfFilter[1].add("coin")
+                if (checkedIds.contains(R.id.chip_token))
+                    listOfFilter[1].add("token")
+                if (checkedIds.contains(R.id.chip_newcoin))
+                    listOfFilter[2].add("true")
+                if (checkedIds.contains(R.id.chip_oldcoin))
+                    listOfFilter[2].add("false")
+
+
+                adapter.updateList(homeViewModel.updateList(listOfFilter))
+
+            }
+        })
     }
 
     private fun showCoinList() {
+        binding.chipGroup.visibility = View.VISIBLE
         binding.coinRecycler.visibility = View.VISIBLE
         binding.coinRecycler.adapter = adapter
         binding.coinRecycler.layoutManager = LinearLayoutManager(this)
