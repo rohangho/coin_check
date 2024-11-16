@@ -26,6 +26,9 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
         }
     }.stateIn(viewModelScope,  SharingStarted.WhileSubscribed(2000), ScreenState.Loading)
 
+    var searchList = emptyList<BaseCoinModel>()
+    var backSearchMode = false
+
     fun getData()
     {
         viewModelScope.launch{
@@ -34,28 +37,49 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
     }
 
 
+    fun setBackMode(backMode: Boolean)
+    {
+       this.backSearchMode = backMode
+    }
 
-    fun updateList(listOfFilter: MutableList<MutableList<String>>) =
-        (screenState.value as SuccessData).data.filter {
-            if(listOfFilter[0].isEmpty())
+    fun updateList(listOfFilter: MutableList<MutableList<String>>): List<BaseCoinModel> {
+        val listToSearch =
+            if (searchList.isEmpty()) (screenState.value as SuccessData).data else searchList
+
+
+        return listToSearch.filter {
+            if (listOfFilter[0].isEmpty())
                 true
             else
                 listOfFilter[0].isNotEmpty() && listOfFilter[0].contains(it.isActive.toString())
 
         }.filter {
-            if(listOfFilter[2].isEmpty())
+            if (listOfFilter[2].isEmpty())
                 true
             else
                 listOfFilter[2].isNotEmpty() && listOfFilter[2].contains(it.isNew.toString())
 
         }.filter {
-            if(listOfFilter[1].isEmpty())
+            if (listOfFilter[1].isEmpty())
                 true
             else
                 listOfFilter[1].isNotEmpty() && listOfFilter[1].contains(it.type)
         }
     }
 
+    fun searchCoin(string: String): List<BaseCoinModel> {
+        searchList = (screenState.value as SuccessData).data.filter {
+            it.name?.equals(string, true) == true ||
+                    it.symbol?.equals(string, true) == true ||
+                    it.symbol?.contains(string,true) == true ||
+                    it.name?.contains(string,true) == true
+        }
+        return searchList
+    }
+
+
+    fun returnAllList() = (screenState.value as SuccessData).data
+}
 
 
 sealed class ScreenState()

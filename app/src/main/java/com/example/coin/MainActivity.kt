@@ -1,8 +1,12 @@
 package com.example.coin
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
+import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
-    private  var adapter = CoinAdapter()
+    private var adapter = CoinAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +43,56 @@ class MainActivity : AppCompatActivity() {
         }
         homeViewModel.getData()
         observeData()
-
-
+        updateSearchIconUI()
         bindFilterChips()
 
+        onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if(homeViewModel.backSearchMode) {
+                    homeViewModel.setBackMode(false)
+                    adapter.updateList(homeViewModel.returnAllList())
+                    updateSearchIconUI()
+                }
+                else
+                    finish()
+
+            }
+        })
+    }
+
+    private fun updateSearchIconUI() {
+        if (homeViewModel.backSearchMode)
+            binding.searchIcon.setImageResource(R.drawable.baseline_arrow_back_24)
+        else
+            binding.searchIcon.setImageResource(R.drawable.icons8_search)
+
+
+        binding.searchIcon.setOnClickListener {
+
+            if (homeViewModel.backSearchMode) {
+                homeViewModel.backSearchMode = false
+                binding.searchIcon.setImageResource(R.drawable.icons8_search)
+                adapter.updateList(homeViewModel.returnAllList())
+
+            } else {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Search")
+                val input = EditText(this)
+                input.inputType = InputType.TYPE_CLASS_TEXT
+                input.hint = "Search Name or Symbol"
+                builder.setView(input)
+                builder.setPositiveButton("OK") { dialog,
+                                                  which ->
+                    binding.searchIcon.setImageResource(R.drawable.baseline_arrow_back_24)
+                    homeViewModel.backSearchMode = true
+                    adapter.updateList(homeViewModel.searchCoin(input.text.toString()))
+                }
+                builder.setNegativeButton("Cancel") { dialog, which ->
+                    dialog.cancel()
+                }
+                builder.show()
+            }
+        }
     }
 
     private fun bindFilterChips() {
@@ -57,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                 listOfFilter.add(mutableListOf()) // for active
                 listOfFilter.add(mutableListOf()) // for coin
                 listOfFilter.add(mutableListOf()) //for isNew
-
 
 
                 if (checkedIds.contains(R.id.chip_active))
@@ -90,11 +139,12 @@ class MainActivity : AppCompatActivity() {
     fun showProgress() {
         binding.loader.visibility = View.VISIBLE
     }
+
     fun hideProgress() {
         binding.loader.visibility = View.GONE
     }
-    fun showError()
-    {
+
+    fun showError() {
         binding.errorImg.visibility = View.VISIBLE
     }
 
@@ -103,14 +153,16 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED)
             {
                 homeViewModel.screenState.collect {
-                    when(it){
+                    when (it) {
                         is ScreenState.Error -> {
                             hideProgress()
                             showError()
                         }
+
                         is ScreenState.Loading -> {
                             showProgress()
                         }
+
                         is ScreenState.SuccessData -> {
                             hideProgress()
                             showCoinList()
@@ -121,4 +173,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }

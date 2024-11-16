@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coin.R
 import com.example.coin.databinding.IndividualCoinLayoutBinding
 import com.example.coin.model.BaseCoinModel
-import com.example.coin.R
 
 class CoinAdapter: RecyclerView.Adapter<CoinAdapter.MyViewModel>() {
 
@@ -39,6 +39,7 @@ class CoinAdapter: RecyclerView.Adapter<CoinAdapter.MyViewModel>() {
         coinList.addAll(list)
         notifyDataSetChanged()
     }
+
 
     inner class MyViewModel(private val coinBinding: IndividualCoinLayoutBinding) : RecyclerView.ViewHolder(coinBinding.root) {
         @SuppressLint("UseCompatLoadingForDrawables")
