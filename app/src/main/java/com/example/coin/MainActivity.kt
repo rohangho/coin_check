@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.searchIcon.setOnClickListener {
-
+            binding.chipGroup.clearCheck()
             if (homeViewModel.backSearchMode) {
                 homeViewModel.backSearchMode = false
                 binding.searchIcon.setImageResource(R.drawable.icons8_search)
