@@ -10,6 +10,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coin.adapter.CoinAdapter
 import com.example.coin.databinding.ActivityMainBinding
 import com.example.coin.viewmodel.HomeViewModel
 import com.example.coin.viewmodel.ScreenState
@@ -23,6 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
+
+    private  var adapter = CoinAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +44,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showCoinList() {
-
+        binding.coinRecycler.visibility = View.VISIBLE
+        binding.coinRecycler.adapter = adapter
+        binding.coinRecycler.layoutManager = LinearLayoutManager(this)
     }
 
     fun showProgress() {
@@ -70,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                         is ScreenState.SuccessData -> {
                             hideProgress()
                             showCoinList()
+                            adapter.updateList(it.data)
                         }
                     }
                 }
