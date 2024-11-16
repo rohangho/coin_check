@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         observeData()
-        bindFilterChips()
 
         onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -143,11 +142,17 @@ class MainActivity : AppCompatActivity() {
         binding.errorImg.visibility = View.VISIBLE
     }
 
+    fun hideError() {
+        binding.errorImg.visibility = View.GONE
+    }
+
     private fun observeData() {
         homeViewModel.coinList.observe(this) {
             hideProgress()
+            hideError()
             adapter.updateList(it)
             showCoinList()
+            bindFilterChips()
             updateSearchIconUI()
         }
         lifecycleScope.launch {
@@ -158,6 +163,7 @@ class MainActivity : AppCompatActivity() {
                         is ScreenState.Error -> {
                             hideProgress()
                             showError()
+                            homeViewModel.getData()
                         }
 
                         is ScreenState.Loading -> {

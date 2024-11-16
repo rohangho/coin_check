@@ -6,12 +6,16 @@ import javax.inject.Inject
 
 class CoinNetworkUseCase @Inject constructor(val coinApi: CoinApi): DataUseCase {
 
-   override suspend fun getData(): Result {
-       val data  =  coinApi.getCoinList()
-        return if(data.isSuccessful)
-            Result.ApiSuccess(data.body()?:emptyArray())
-        else
-            (Result.ApiError)
+    override suspend fun getData(): Result {
+        return try {
+            val data = coinApi.getCoinList()
+            return if (data.isSuccessful)
+                Result.ApiSuccess(data.body() ?: emptyArray())
+            else
+                Result.ApiError
+        } catch (e: Exception) {
+            Result.ApiError
+        }
 
     }
 }

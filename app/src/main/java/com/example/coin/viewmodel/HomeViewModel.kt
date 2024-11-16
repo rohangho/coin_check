@@ -89,6 +89,10 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
     fun syncData() {
         _coinList.value = (screenState.value as SuccessData).data
     }
+
+    fun getData() {
+        repository.getData()
+    }
 }
 
 
