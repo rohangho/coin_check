@@ -4,9 +4,9 @@ import com.example.coin.model.BaseCoinModel
 import com.example.coin.network.CoinApi
 import javax.inject.Inject
 
-class CoinApiUseCase @Inject constructor(val coinApi: CoinApi) {
+class CoinNetworkUseCase @Inject constructor(val coinApi: CoinApi): DataUseCase {
 
-    suspend fun getData(): Result {
+   override suspend fun getData(): Result {
        val data  =  coinApi.getCoinList()
         return if(data.isSuccessful)
             Result.ApiSuccess(data.body()?:emptyArray())
