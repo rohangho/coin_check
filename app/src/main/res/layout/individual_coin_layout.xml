@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,7 +13,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/coinName"
         tools:text="Bitcoin"
-        android:textSize="24sp"
+        android:textAppearance="?textAppearanceListItem"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="2dp"
         />
@@ -23,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@id/coinName"
         app:layout_constraintLeft_toLeftOf="@id/coinName"
         android:id="@+id/coinAcronym"
-        android:textSize="18sp"
+        android:textAppearance="?textAppearanceListItemSecondary"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"

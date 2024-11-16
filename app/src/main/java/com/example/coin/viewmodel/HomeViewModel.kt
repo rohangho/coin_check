@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,16 +30,9 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
             is Result.ApiSuccess -> emit(SuccessData(it.data.toList()))
             Result.ApiError -> emit(ScreenState.Error("Error"))
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(2000), ScreenState.Loading)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, ScreenState.Loading)
 
     var backSearchMode = false
-
-
-    fun getData() {
-        viewModelScope.launch {
-            repository.getData()
-        }
-    }
 
 
     private fun setBackMode(backMode: Boolean) {

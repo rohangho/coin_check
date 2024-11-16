@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coin.R
 import com.example.coin.databinding.IndividualCoinLayoutBinding
@@ -27,6 +29,18 @@ class CoinAdapter: RecyclerView.Adapter<CoinAdapter.MyViewModel>() {
 
     override fun onBindViewHolder(holder: MyViewModel, position: Int) {
         holder.bind( coinList[position])
+        val anim = ScaleAnimation(
+            0.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        );
+        anim.setDuration(1000);
+        holder.itemView.startAnimation(anim);
     }
 
 
