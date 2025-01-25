@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "coin"
 include(":app")
- 
+include(":demoappforsdkcall")
