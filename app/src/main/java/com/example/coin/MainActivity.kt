@@ -2,6 +2,7 @@ package com.example.coin
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
@@ -21,6 +22,7 @@ import com.example.coin.viewmodel.ScreenState
 import com.example.coin.viewmodel.UIEvent
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -147,6 +149,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
+
+
+
         homeViewModel.coinList.observe(this) {
             hideProgress()
             hideError()
@@ -158,6 +163,12 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED)
             {
+
+                homeViewModel.dummyText.collect{
+                    Log.e("Hiiii in collect",it.toString())
+                }
+
+
                 homeViewModel.screenState.collect {
                     when (it) {
                         is ScreenState.Error -> {

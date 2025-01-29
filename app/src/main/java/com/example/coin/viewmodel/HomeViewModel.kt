@@ -6,22 +6,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coin.model.BaseCoinModel
 import com.example.coin.repository.CoinDataRepository
+import com.example.coin.usecase.DataUseCase
 import com.example.coin.usecase.Result
 import com.example.coin.viewmodel.ScreenState.SuccessData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : ViewModel() {
+class HomeViewModel  @Inject constructor( val repository: CoinDataRepository,
+    val coinUseCase: DataUseCase) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
 
     var _coinList: MutableLiveData<List<BaseCoinModel>> = MutableLiveData<List<BaseCoinModel>>()
     var coinList: LiveData<List<BaseCoinModel>> = _coinList
+
+
+    val dummyText = repository.getUpdatedText().stateIn(viewModelScope, SharingStarted.Eagerly,"d")
+
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,6 +46,8 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
     private fun setBackMode(backMode: Boolean) {
         this.backSearchMode = backMode
     }
+
+
 
 
 
@@ -93,6 +103,7 @@ class HomeViewModel  @Inject constructor( val repository: CoinDataRepository) : 
     fun getData() {
         repository.getData()
     }
+
 }
 
 

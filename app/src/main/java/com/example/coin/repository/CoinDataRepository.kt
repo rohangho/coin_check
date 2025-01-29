@@ -1,13 +1,18 @@
 package com.example.coin.repository
 
-import com.example.coin.usecase.CoinNetworkUseCase
+import android.util.Log
 import com.example.coin.usecase.DataUseCase
 import com.example.coin.usecase.Result
 import com.example.coin.usecase.Result.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.w3c.dom.Text
 import javax.inject.Inject
+import kotlin.math.log
 
 class CoinDataRepository @Inject constructor(private val coinNetworkUseCase: DataUseCase){
+
      fun getData() = flow<Result> {
         val body = coinNetworkUseCase.getData()
         when(body) {
@@ -19,4 +24,23 @@ class CoinDataRepository @Inject constructor(private val coinNetworkUseCase: Dat
             }
     }
     }
+
+
+
+
+
+
+
+
+    fun getUpdatedText(): Flow<String>
+    {
+       return flow<String> {while (true) {
+           Log.e("dfgh", "getUpdatedText: ", )
+                emit(System.currentTimeMillis().toString())
+                delay(1000)
+            }
+        }
+    }
+
+
 }

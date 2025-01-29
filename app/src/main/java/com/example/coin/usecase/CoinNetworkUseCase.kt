@@ -2,6 +2,7 @@ package com.example.coin.usecase
 
 import com.example.coin.model.BaseCoinModel
 import com.example.coin.network.CoinApi
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class CoinNetworkUseCase @Inject constructor(val coinApi: CoinApi): DataUseCase {
@@ -18,6 +19,8 @@ class CoinNetworkUseCase @Inject constructor(val coinApi: CoinApi): DataUseCase 
         }
 
     }
+
+
 }
 
 
